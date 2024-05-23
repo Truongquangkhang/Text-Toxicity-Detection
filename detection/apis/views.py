@@ -14,6 +14,6 @@ class ContentDetection(APIView):
         serializer = ContentSerializer(data=request.data)
         if serializer.is_valid():
             input_text = serializer.validated_data['content']
-            predictions = detector.predict_from_input(input_text)
-            return Response({'predictions': predictions}, status=status.HTTP_201_CREATED)
+            text, predictions = detector.predict_from_input(input_text)
+            return Response({"text": text,'predictions': predictions}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
