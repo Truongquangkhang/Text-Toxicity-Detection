@@ -16,7 +16,7 @@ class DetectContent:
         self.device = device
 
     def process_input(self, text):
-        lenght = text.count(" ")
+        lenght = text.count(" ") + 1
         inputs = self.tokenizer(text, return_tensors="pt", max_length=lenght, truncation=True, padding="max_length")
         return inputs
 
