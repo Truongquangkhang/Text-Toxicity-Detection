@@ -10,13 +10,34 @@ class DetectContent:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-large",  force_download= False)
         input_model = XLMRobertaModel.from_pretrained("vinai/phobert-large",  force_download= False)
-        input_model.resize_token_embeddings(len(self.tokenizer))
+        # self.tokenizer.save_pretrained('./local_directory/tokenizer')
+        # input_model.save_pretrained('./local_directory/model')
+        # Download and cache the tokenizer
+        # tokenizer = AutoTokenizer.from_pretrained(model_name)
 
+        # Download and cache the model
+        # model = AutoModel.from_pretrained(model_name)
+        # self.test_save_model_locally()
+        input_model.resize_token_embeddings(len(self.tokenizer))
+        
         self.model = MultiTaskModel(input_model=input_model)
         self.model.load_state_dict(torch.load('apis/phoBERT/mymodel.pth', map_location=device))
         self.model.to(device)
         self.model.eval()
         self.device = device
+
+    def test_save_model_locally(self):
+        model_name = "vinai/phobert-large"
+
+        # Download and cache the tokenizer
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+        # Download and cache the model
+        model = XLMRobertaModel.from_pretrained(model_name)
+
+        # Save the model and tokenizer locally
+        tokenizer.save_pretrained("phobert-large")
+        model.save_pretrained("phobert-large")
 
     def process_vncorenlp(seft, text):
         annotator_text = annotator.tokenize(text)
