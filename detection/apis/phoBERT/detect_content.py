@@ -8,8 +8,8 @@ print(annotator)
 class DetectContent:
     def __init__(self):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-large",  force_download= False)
-        input_model = XLMRobertaModel.from_pretrained("vinai/phobert-large",  force_download= False)
+        self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-large")
+        input_model = XLMRobertaModel.from_pretrained("vinai/phobert-large")
         # self.tokenizer.save_pretrained('./local_directory/tokenizer')
         # input_model.save_pretrained('./local_directory/model')
         # Download and cache the tokenizer
