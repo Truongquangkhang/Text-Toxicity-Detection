@@ -18,7 +18,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Download
         run: |
-          ls
+          echo "Download model from google drive"
+          echo ls
           chmod +x ./scripts/download-model.sh
           ./scripts/download-model.sh
       - name: Dockerized
