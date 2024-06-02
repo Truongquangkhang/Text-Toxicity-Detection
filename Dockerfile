@@ -16,6 +16,12 @@ RUN apt-get install -y openjdk-18-jre
 
 RUN pip install -r requirements.txt
 
+# Download PhoBERT model
+RUN mkdir -p /root/.cache/huggingface/transformers/ && \
+    python3 -c "from transformers import AutoTokenizer, AutoModel; \
+                AutoTokenizer.from_pretrained('vinai/phobert-large', cache_dir='/root/.cache/huggingface/transformers/'); \
+                AutoModel.from_pretrained('vinai/phobert-large', cache_dir='/root/.cache/huggingface/transformers/')"
+
 RUN cd detection
 
 ENTRYPOINT ["python3"]
