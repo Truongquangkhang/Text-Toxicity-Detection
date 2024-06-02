@@ -18,10 +18,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Download
         run: |
-          echo "Download model from google drive"
-          echo ls
-          chmod +x ./scripts/download-model.sh
-          ./scripts/download-model.sh
+          - echo "Download model from google drive"
+          - ls
+          - chmod +x ./scripts/download-model.sh
+          - ./scripts/download-model.sh
       - name: Dockerized
         run: |
           echo 'Building docker image $IMAGE_REPOSITORY:$IMAGE_TAG'
