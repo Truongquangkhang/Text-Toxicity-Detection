@@ -12,6 +12,8 @@ COPY detection /app
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 
+RUN sudo apt-get install openjdk-18-jre
+
 RUN pip install -r requirements.txt
 
 RUN cd detection
