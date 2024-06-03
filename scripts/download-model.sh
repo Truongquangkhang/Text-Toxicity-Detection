@@ -5,3 +5,12 @@
 wget -O ./detection/vinai-phoBERT/model.safetensors 'https://dutudn-my.sharepoint.com/:u:/g/personal/102200175_sv1_dut_udn_vn/EWOfVJdhJ8ZCg4T5UMSWV34BdqnDngBKeWneME_3Q5X7zQ?download=1'
 
 wget -O ./detection/apis/phoBERT/mymodel.pth 'https://dutudn-my.sharepoint.com/:u:/g/personal/102200175_sv1_dut_udn_vn/ESUz75Q_wBJBsA2O2q1KtIIB1YfVL6-DuGmi6O8of9tA6Q?download=1'
+
+git add ./detection/vinai-phoBERT/model.safetensors
+git add ./detection/apis/phoBERT/mymodel.pth
+
+git commit -m "Add model"
+
+git push origin master
+
+echo "Script completed successfully."
