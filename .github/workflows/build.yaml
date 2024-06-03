@@ -19,6 +19,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Download
+        run: |
+          echo "Download model from google drive"
+          chmod +x ./scripts/download-model.sh
+          ./scripts/download-model.sh
       - name: Dockerized
         run: |
           echo 'Building docker image $IMAGE_REPOSITORY:$IMAGE_TAG'
