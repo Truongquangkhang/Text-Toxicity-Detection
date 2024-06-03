@@ -27,7 +27,6 @@ jobs:
       - name: Dockerized
         run: |
           echo 'Building docker image $IMAGE_REPOSITORY:$IMAGE_TAG'
-          ls detection/vinai-phoBERT
           chmod +x ./scripts/dockerize.sh
           ./scripts/dockerize.sh $IMAGE_TAG $IMAGE_REPOSITORY
         env:
