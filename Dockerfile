@@ -18,7 +18,7 @@ RUN apt-get install -y openjdk-18-jre
 
 RUN apt-get clean
 
-RUN pip install -r requirements.txt
+RUN TMPDIR=/home/user/tmp/ python3 -m pip install -r requirements.txt
 
 # # Download PhoBERT model
 # RUN mkdir -p /root/.cache/huggingface/transformers/ && \
