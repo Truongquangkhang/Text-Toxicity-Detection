@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoTokenizer, XLMRobertaModel
+from transformers import AutoTokenizer, XLMRobertaModel, AutoModel
 from .multi_task_model import MultiTaskModel
 from vncorenlp import VnCoreNLP
 print("Proccess")
@@ -8,13 +8,13 @@ print(annotator)
 class DetectContent:
     def __init__(self):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-large")
-        input_model = XLMRobertaModel.from_pretrained("vinai/phobert-large")
+        self.tokenizer = AutoTokenizer.from_pretrained("vinai-phoBERT")
+        input_model = AutoModel.from_pretrained("vinai-phoBERT")
 
         input_model.resize_token_embeddings(len(self.tokenizer))
         
         self.model = MultiTaskModel(input_model=input_model)
-        self.model.load_state_dict(torch.load('apis/phoBERT/mymodel.pth', map_location=device))
+        #self.model.load_state_dict(torch.load('apis/phoBERT/mymodel.pth', map_location=device))
         self.model.to(device)
         self.model.eval()
         self.device = device
