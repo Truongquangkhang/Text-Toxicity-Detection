@@ -2,3 +2,4 @@ env
 # *.pth
 __pycache__/
 # *.safetensors
+vinai-phoBERT-test
