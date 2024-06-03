@@ -12,7 +12,11 @@ COPY detection /app
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 
+RUN apt-get clean
+
 RUN apt-get install -y openjdk-18-jre
+
+RUN apt-get clean
 
 RUN pip install -r requirements.txt
 
