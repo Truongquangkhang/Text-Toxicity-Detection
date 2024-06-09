@@ -8,27 +8,19 @@ print(annotator)
 class DetectContent:
     def __init__(self):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-large")
-        input_model = AutoModel.from_pretrained("vinai/phobert-large")
-
+        self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-base")
+        input_model = AutoModel.from_pretrained("vinai/phobert-base")
         input_model.resize_token_embeddings(len(self.tokenizer))
-        
         self.model = MultiTaskModel(input_model=input_model)
-        self.model.load_state_dict(torch.load('apis/phoBERT/mymodel.pth', map_location=device))
+        self.model.load_state_dict(torch.load('apis/phoBERT/basemodel.pth', map_location=device))
         self.model.to(device)
         self.model.eval()
         self.device = device
 
     def test_save_model_locally(self):
         model_name = "vinai/phobert-large"
-
-        # Download and cache the tokenizer
         tokenizer = AutoTokenizer.from_pretrained(model_name)
-
-        # Download and cache the model
         model = XLMRobertaModel.from_pretrained(model_name)
-
-        # Save the model and tokenizer locally
         tokenizer.save_pretrained("phobert-large")
         model.save_pretrained("phobert-large")
 

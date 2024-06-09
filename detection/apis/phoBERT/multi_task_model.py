@@ -5,7 +5,7 @@ class MultiTaskModel(nn.Module):
     def __init__(self, input_model):
         super(MultiTaskModel, self).__init__()
         self.bert = input_model
-        self.span_classifier = nn.Linear(1024, 1)
+        self.span_classifier = nn.Linear(768, 1)
         self.dropout = nn.Dropout(0.1)
 
     def forward(self, input_ids, attention_mask):
