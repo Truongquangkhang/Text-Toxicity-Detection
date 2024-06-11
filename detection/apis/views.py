@@ -18,11 +18,10 @@ class ContentDetection(APIView):
             return Response({"text": text,'predictions': predictions}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class ContentDetection(APIView):
-#     def post(self, request):
-#         serializer = ContentSerializer(data=request.data)
-#         if serializer.is_valid():
-#             input_text = serializer.validated_data['content']
-#             # text, predictions = detector.predict_from_input(input_text)
-#             return Response({"text": input_text}, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class HealthCheckView(APIView):
+    def get(self, request):
+        data = {
+            'status': 'ok',
+            'message': 'The application is running smoothly.'
+        }
+        return Response(data, status=status.HTTP_200_OK)
