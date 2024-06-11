@@ -6,7 +6,7 @@ COPY requirements.txt /app
 COPY detection /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openjdk-11-jre-headless \
+    apt-get install -y openjdk-18-jre \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir -r requirements.txt
