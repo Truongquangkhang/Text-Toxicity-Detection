@@ -1,15 +1,15 @@
-FROM python:3.9-slim
+FROM ubuntu:22.04
 
 WORKDIR /app
 
 COPY requirements.txt /app
 COPY detection /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    apt-get install -y openjdk-18-jre \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3 python3-pip
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get install -y openjdk-18-jre
+
+RUN python3 -m pip install -r requirements.txt
 
 RUN cd detection
 

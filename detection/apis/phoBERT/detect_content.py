@@ -1,52 +1,40 @@
-import torch
-from transformers import AutoTokenizer, XLMRobertaModel, AutoModel
-from .multi_task_model import MultiTaskModel
+import numpy as np
+import onnxruntime
+from transformers import AutoTokenizer
 from vncorenlp import VnCoreNLP
-print("Proccess")
+
+# Load VnCoreNLP
 annotator = VnCoreNLP("apis/vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
-print(annotator)
+# Load the tokenizer
+tokenizer = AutoTokenizer.from_pretrained("phobert-large")
+
 class DetectContent:
     def __init__(self):
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-base")
-        input_model = AutoModel.from_pretrained("vinai/phobert-base")
-        input_model.resize_token_embeddings(len(self.tokenizer))
-        self.model = MultiTaskModel(input_model=input_model)
-        self.model.load_state_dict(torch.load('apis/phoBERT/basemodel.pth', map_location=device))
-        self.model.to(device)
-        self.model.eval()
-        self.device = device
+        self.ort_session = onnxruntime.InferenceSession("apis/phoBERT/mymodel.onnx")
 
-    def test_save_model_locally(self):
-        model_name = "vinai/phobert-large"
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        model = XLMRobertaModel.from_pretrained(model_name)
-        tokenizer.save_pretrained("phobert-large")
-        model.save_pretrained("phobert-large")
-
-    def process_vncorenlp(seft, text):
+    def process_vncorenlp(self, text):
         annotator_text = annotator.tokenize(text)
         tokens = ""
         for i in range(len(annotator_text)):
             for j in range(len(annotator_text[i])):
-                # tokens.append(annotator_text[i][j])
                 tokens += annotator_text[i][j] + " "
         return tokens
     
     def process_input(self, text):
-        lenght = text.count(" ") + 1
-        inputs = self.tokenizer(text, return_tensors="pt", max_length=lenght, truncation=True, padding="max_length")
-        print(input)
+        inputs = tokenizer(text, return_tensors="np", max_length=64, truncation=True, padding="max_length")
         return inputs
 
     def predict_from_input(self, input_text):
         text = self.process_vncorenlp(input_text)
         inputs = self.process_input(text)
-        input_ids = inputs['input_ids'].to(self.device)
-        attention_mask = inputs['attention_mask'].to(self.device)
 
-        with torch.no_grad():
-            span_logits = self.model(input_ids, attention_mask)
+        # Update input names according to the ONNX model
+        ort_inputs = {
+            "input_ids": inputs["input_ids"].astype(np.int64),
+            "attention_mask": inputs["attention_mask"].astype(np.int64)
+        }
 
-        span_preds = (span_logits.squeeze().cpu().numpy() > 0.5).astype(int)
+        ort_outs = self.ort_session.run(None, ort_inputs)
+        span_preds = (ort_outs[0].squeeze() > 0.5).astype(int)
+
         return text, span_preds
