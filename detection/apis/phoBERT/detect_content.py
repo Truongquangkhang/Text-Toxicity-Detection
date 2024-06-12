@@ -7,21 +7,23 @@ from vncorenlp import VnCoreNLP
 annotator = VnCoreNLP("apis/vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
 # Load the tokenizer
 tokenizer = AutoTokenizer.from_pretrained("phobert-large")
-
+MAX_LENTH = 64
 class DetectContent:
     def __init__(self):
         self.ort_session = onnxruntime.InferenceSession("apis/phoBERT/mymodel.onnx")
 
     def process_vncorenlp(self, text):
         annotator_text = annotator.tokenize(text)
-        tokens = ""
+        sents = []
         for i in range(len(annotator_text)):
-            for j in range(len(annotator_text[i])):
-                tokens += annotator_text[i][j] + " "
+            sents.append(' '.join(annotator_text[i]))
+
+        tokens = ' '.join(sents)
+        print(tokens)
         return tokens
     
     def process_input(self, text):
-        inputs = tokenizer(text, return_tensors="np", max_length=64, truncation=True, padding="max_length")
+        inputs = tokenizer(text, return_tensors="np", max_length=MAX_LENTH, truncation=True, padding="max_length")
         return inputs
 
     def predict_from_input(self, input_text):
@@ -37,4 +39,7 @@ class DetectContent:
         ort_outs = self.ort_session.run(None, ort_inputs)
         span_preds = (ort_outs[0].squeeze() > 0.5).astype(int)
 
-        return text, span_preds
+        countCharacters = text.count(' ') + 1
+        if countCharacters > MAX_LENTH:
+            return text, span_preds
+        return text, span_preds[:countCharacters]
