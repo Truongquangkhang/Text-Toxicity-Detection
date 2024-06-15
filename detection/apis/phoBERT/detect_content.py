@@ -6,11 +6,11 @@ from vncorenlp import VnCoreNLP
 # Load VnCoreNLP
 annotator = VnCoreNLP("apis/vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
 # Load the tokenizer
-tokenizer = AutoTokenizer.from_pretrained("phobert-large")
+tokenizer = AutoTokenizer.from_pretrained("phobert-base")
 MAX_LENTH = 64
 class DetectContent:
     def __init__(self):
-        self.ort_session = onnxruntime.InferenceSession("apis/phoBERT/mymodel.onnx")
+        self.ort_session = onnxruntime.InferenceSession("apis/phoBERT/fine_tuned_phoBERT.onnx")
 
     def process_vncorenlp(self, text):
         annotator_text = annotator.tokenize(text)

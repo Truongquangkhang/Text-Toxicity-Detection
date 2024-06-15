@@ -4,4 +4,6 @@
 
 # wget -O ./detection/vinai-phoBERT/model.safetensors 'https://dutudn-my.sharepoint.com/:u:/g/personal/102200175_sv1_dut_udn_vn/EWOfVJdhJ8ZCg4T5UMSWV34BdqnDngBKeWneME_3Q5X7zQ?download=1'
 
-wget -O ./detection/apis/phoBERT/mymodel.onnx 'https://dutudn-my.sharepoint.com/:u:/g/personal/102200175_sv1_dut_udn_vn/EYD02vqOJ7dIlxDJ7fKlZCEBIY37PBd9UZIGCY_Qw4tMsA?download=1'
+# wget -O ./detection/apis/phoBERT/mymodel.onnx 'https://dutudn-my.sharepoint.com/:u:/g/personal/102200175_sv1_dut_udn_vn/EYD02vqOJ7dIlxDJ7fKlZCEBIY37PBd9UZIGCY_Qw4tMsA?download=1'
+
+wget -O ./detection/apis/phoBERT/fine_tuned_phoBERT.onnx 'https://dutudn-my.sharepoint.com/:u:/g/personal/102200175_sv1_dut_udn_vn/EWUamnUu6HRLhDRkzs9qgZEBG5IQELlfCkqfUDPyMLE8ow?download=1'
